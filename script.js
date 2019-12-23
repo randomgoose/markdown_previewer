@@ -153,14 +153,22 @@ class Toolbar extends React.Component {
 			<button className='btn' id='bold' onClick={this.setBold}><i className="fas fa-lg fa-bold"></i></button>
 			<button className='btn' id='italic' onClick={this.setItalic}><i className="fas fa-lg fa-italic"></i></button>
 			<button className='btn' id='strike' onClick={this.setStrike}><i className="fas fa-lg fa-strikethrough"></i></button>
-			<select id='theme' onChange={}>
+			<select id='theme'>
 				<option value='Github'>Github</option>
 				<option value='Gothic'>Gothic</option>
 				<option value='Newsprint'>Newsprint</option>
 			</select>
+			<button className='btn' id='export' onClick={exportPDF}></button>
 		</div>
 		);
 	}
+}
+
+function exportPDF(){
+	let doc = new jsPDF();
+	doc.text('Hello world!', 10, 10);
+	doc.save('a4.pdf');
+	
 }
 
 class Preview extends React.Component {
@@ -180,7 +188,7 @@ class WordCounter extends React.Component {
 		super(props);
 	}
 	
-	componentDidMount(){}
+	// componentDidMount(){}
 
 	render(){
 		return(
