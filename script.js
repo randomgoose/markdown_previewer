@@ -141,6 +141,7 @@ class Toolbar extends React.Component {
 
 		this.props.updateText({
 			text: editor.value
+			// wordsNum: 
 		});
 	}
 
@@ -151,6 +152,12 @@ class Toolbar extends React.Component {
 			<button className='btn' id='redo'><i className="fas fa-lg fa-redo"></i></button>
 			<button className='btn' id='bold' onClick={this.setBold}><i className="fas fa-lg fa-bold"></i></button>
 			<button className='btn' id='italic' onClick={this.setItalic}><i className="fas fa-lg fa-italic"></i></button>
+			<button className='btn' id='strike' onClick={this.setStrike}><i className="fas fa-lg fa-strikethrough"></i></button>
+			<select id='theme' onChange={}>
+				<option value='Github'>Github</option>
+				<option value='Gothic'>Gothic</option>
+				<option value='Newsprint'>Newsprint</option>
+			</select>
 		</div>
 		);
 	}
