@@ -1,3 +1,18 @@
+function changeTheme(event) {
+	// alert(event.target.value);
+	let currentThemeLink = document.getElementById("theme");
+	// console.log(currentThemeLink.href);
+	currentThemeLink.setAttribute('href', './themes/' + event.target.value.toLowerCase() + '.css');
+	console.log(currentThemeLink);
+    // let newThemeLink = document.createElement("link");
+    // newThemeLink.setAttribute("rel", "stylesheet");
+    // newThemeLink.setAttribute("type", "text/css");
+	// newThemeLink.setAttribute("href", "./themes/" + event.target.value.toLowerCase());
+	// console.log(newThemeLink);
+    // // document.getElementsByTagName("head").item(0).replaceChild(currentThemeLink, newThemeLink);
+	// console.log(document.getElementsByTagName("head").item(0).childNodes);
+}
+
 String.prototype.insertAt = function(index, string){
 	return this.substring(0, index) + string + this.substring(index);
 }
@@ -153,7 +168,7 @@ class Toolbar extends React.Component {
 			<button className='btn' id='bold' onClick={this.setBold}><i className="fas fa-lg fa-bold"></i></button>
 			<button className='btn' id='italic' onClick={this.setItalic}><i className="fas fa-lg fa-italic"></i></button>
 			<button className='btn' id='strike' onClick={this.setStrike}><i className="fas fa-lg fa-strikethrough"></i></button>
-			<select id='theme'>
+			<select id='theme' onChange={changeTheme}>
 				<option value='Github'>Github</option>
 				<option value='Gothic'>Gothic</option>
 				<option value='Newsprint'>Newsprint</option>
