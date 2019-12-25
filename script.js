@@ -1,3 +1,11 @@
+// // Keyboard shortcuts
+
+// document.onkeyup = function(event){
+// 	switch(event.which)
+// }
+
+// Keyboard shortcuts
+
 function changeTheme(event) {
 	// alert(event.target.value);
 	let currentThemeLink = document.getElementById("theme");
@@ -15,7 +23,7 @@ function changeTheme(event) {
 
 String.prototype.insertAt = function(index, string){
 	return this.substring(0, index) + string + this.substring(index);
-}
+};
 
 marked.setOptions({
 	breaks: true
@@ -66,16 +74,17 @@ And here. | Okay. | I think we get it.
 * And last but not least, let's not forget embedded images:
 
 ![React Logo w/ Text](https://goo.gl/Umyytc)
-`
+`;
 
 class Editor extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			rawText: defaultText
-		}
+		};
 	this.changeHandler = this.changeHandler.bind(this);
 	this.countWords = this.countWords.bind(this);
+	this.keyHandler = this.keyHandler.bind(this);
 	}
 
 	// componentDidMount(){
@@ -86,14 +95,12 @@ class Editor extends React.Component {
 	// }
 	
 	countWords = function(){
-		let wordsNum = this.state.rawText.match(/\b[-?(\w+)?]+\b/gi).length;
-		return wordsNum;
-	}
+		return this.state.rawText.match(/\b[-?(\w+)?]+\b/gi).length;
+	};
 
 	countLines = function(){
-		let linesNum = this.state.rawText.split('\n').length;
-		return linesNum;
-	}
+		return this.state.rawText.split('\n').length;
+	};
 	
 	changeHandler = function(event){
 		event.preventDefault();
@@ -105,11 +112,28 @@ class Editor extends React.Component {
 			 wordsNum: this.countWords(),
 			 linesNum: this.countLines()
 			});
-	}
+	};
 	
+	keyHandler = function(event){
+		event.preventDefault();
+		console.log(event.which);
+		if(event.ctrlKey){
+			switch(event.which){
+				case 66:
+					console.log('Keyboard Shortcuts: Bold');
+					break;
+				case 73:
+					console.log('Keyboard Shortcuts: Italic');
+					break;
+				default:
+					console.log('unknown');
+			}
+		}
+	};
+
 	render(){
 		return(
-			<textarea id='editor' onChange={this.changeHandler} defaultValue={defaultText} autoFocus='autoFocus'></textarea>
+			<textarea id='editor' onKeyUp={this.keyHandler} onChange={this.changeHandler} defaultValue={defaultText} autoFocus='autoFocus' />
 		)
 	}
 }
@@ -126,9 +150,7 @@ class Toolbar extends React.Component {
 		let selectionStart = editor.selectionStart;
 		let selectionEnd = editor.selectionEnd;
 
-		let output = editor.value.insertAt(selectionStart, '*').insertAt(selectionEnd+1, '*');
-		
-		editor.value = output;
+		editor.value = editor.value.insertAt(selectionStart, '*').insertAt(selectionEnd + 1, '*');
 
 		editor.focus();
 		editor.setSelectionRange(selectionStart, selectionEnd+2);
@@ -147,12 +169,10 @@ class Toolbar extends React.Component {
 		let selectionStart = editor.selectionStart;
 		let selectionEnd = editor.selectionEnd;
 
-		let output = editor.value.insertAt(editor.selectionStart, '**').insertAt(editor.selectionEnd+2, '**');
-
-		editor.value = output;
+		editor.value = editor.value.insertAt(editor.selectionStart, '**').insertAt(editor.selectionEnd + 2, '**');
 
 		editor.focus();
-		editor.setSelectionRange(selectionStart, selectionEnd+4)
+		editor.setSelectionRange(selectionStart, selectionEnd+4);
 
 		this.props.updateText({
 			text: editor.value
@@ -160,23 +180,29 @@ class Toolbar extends React.Component {
 		});
 	}
 
+	setStrike() {
+		
+	}
+
 	render(){
 		return(
 		<div id="toolBar"> 
-			<button className='btn' id='undo'><i className="fas fa-lg fa-undo"></i></button>
-			<button className='btn' id='redo'><i className="fas fa-lg fa-redo"></i></button>
-			<button className='btn' id='bold' onClick={this.setBold}><i className="fas fa-lg fa-bold"></i></button>
-			<button className='btn' id='italic' onClick={this.setItalic}><i className="fas fa-lg fa-italic"></i></button>
-			<button className='btn' id='strike' onClick={this.setStrike}><i className="fas fa-lg fa-strikethrough"></i></button>
+			<button className='btn' id='undo'><i className="fas fa-lg fa-undo" /></button>
+			<button className='btn' id='redo'><i className="fas fa-lg fa-redo" /></button>
+			<button className='btn' id='bold' onClick={this.setBold}><i className="fas fa-lg fa-bold" /></button>
+			<button className='btn' id='italic' onClick={this.setItalic}><i className="fas fa-lg fa-italic" /></button>
+			<button className='btn' id='strike' onClick={this.setStrike}><i className="fas fa-lg fa-strikethrough" /></button>
 			<select id='theme' onChange={changeTheme}>
 				<option value='Github'>Github</option>
 				<option value='Gothic'>Gothic</option>
 				<option value='Newsprint'>Newsprint</option>
 			</select>
-			<button className='btn' id='export' onClick={exportPDF}></button>
+			<button className='btn' id='export' onClick={exportPDF} />
 		</div>
 		);
 	}
+
+
 }
 
 function exportPDF(){
@@ -193,7 +219,7 @@ class Preview extends React.Component {
 	
 	render(){
 		return(
-			<div id="preview" dangerouslySetInnerHTML={{__html: marked(this.props.textToRender)}}></div>
+			<div id="preview" dangerouslySetInnerHTML={{__html: marked(this.props.textToRender)}} />
 		)
 	}
 }
@@ -211,7 +237,7 @@ class WordCounter extends React.Component {
 				<span>Markdown</span>
 				<b id='wordsNum'>{this.props.wordsNum}</b><span>words</span>
 				<b id='linesNum'>{this.props.linesNum}</b><span>lines</span>
-				<b id='cursorLocator'></b>
+				<b id='cursorLocator' />
             </div>
 		)
 	}
@@ -239,7 +265,7 @@ class App extends React.Component {
 			linesNum: text.linesNum
 		})
 		// console.log(this.state.linesNum);
-	}
+	};
 	
 	render(){
 		return(
