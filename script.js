@@ -196,6 +196,7 @@ class Toolbar extends React.Component {
 				<option value='Github'>Github</option>
 				<option value='Gothic'>Gothic</option>
 				<option value='Newsprint'>Newsprint</option>
+				<option value='Night'>Night</option>
 			</select>
 			<button className='btn' id='export' onClick={exportPDF} />
 		</div>
