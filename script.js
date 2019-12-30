@@ -142,13 +142,40 @@ class Editor extends React.Component {
 class SideBar extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			collapsed: this.props.collapsed
+		}
 	}
+	
+	static getDerivedStateFromProps(props, state){
+		return {
+			collapsed: props.collapsed
+		}
+	}
+	// componentWillReceiveProps({collapsed}) {
+	// 	this.setState({
+	// 		collapsed: this.props.collapsed
+	// 	})
+	//   }
+
 	render(){
+		console.log(this.state.collapsed);
+		let contentList = [
+			{"title": "a", "content": "yes!"},
+			{"title": "b", "content": "no!"},
+			{"title": "c", "content": "okay.."}
+		]
+		let documents = contentList.map((e) => <li key={contentList.indexOf(e)}>{e.title}</li>)
+
 		return(
-			<div id='sideBar'>
+			<div id='sideBar' className={this.state.collapsed ? 'sideBar hidden' : 'sideBar shown'}>
 				SideBar!
 				<div id={'userStatus'} />
-				<div id='document'/>
+				<div id='document'>
+					<ul>
+						{documents}
+					</ul>
+				</div>
 			</div>
 		)
 	}
@@ -161,6 +188,17 @@ class ToolBar extends React.Component {
 		this.setBold = this.setBold.bind(this);
 		this.saveDocument = this.saveDocument.bind(this);
 		this.setStrike = this.setStrike.bind(this);
+		// this.toggleSideBar = this.toggleSideBar.bind(this);
+
+		this.state = {
+			sideBarCollapsed: true
+		}
+	}
+
+	static getDerivedStateFromProps(props, state){
+		return {
+			sideBarCollapsed: props.collapsed
+		}
 	}
 
 	setItalic(){
@@ -217,8 +255,19 @@ class ToolBar extends React.Component {
 	}
 
 	render(){
+		// console.log(this.state.sideBarCollapsed);
+		let menuIcon;
+
+		if (this.state.sideBarCollapsed){
+			console.log(this.state.sideBarCollapsed);
+			menuIcon = <i className={'fas fa-lg fa-bars'} />;
+		} else {
+			menuIcon = <i className={'fas fa-lg fa-times'} />;
+		}
+
 		return(
 		<div id="toolBar"> 
+			<button className='btn' id='menu' onClick={this.props.toggleSideBar}>{menuIcon}</button>
 			<button className='btn' id='undo'><i className="fas fa-lg fa-undo" /></button>
 			<button className='btn' id='redo'><i className="fas fa-lg fa-redo" /></button>
 			<button className='btn' id='bold' onClick={this.setBold}><i className="fas fa-lg fa-bold" /></button>
@@ -288,24 +337,32 @@ class App extends React.Component {
 		this.state = {
 			textToRender: defaultText,
 			wordsNum: defaultText.match(/\b[-?(\w+)?]+\b/gi).length,
-			linesNum: defaultText.split('\n').length
+			linesNum: defaultText.split('\n').length,
+			sideBarCollapsed: true
 		}
 	}
 	
+	toggleSideBar = () => {
+		this.setState({
+			sideBarCollapsed: !this.state.sideBarCollapsed
+		});
+		// console.log(this.state.sideBarCollapsed);
+	}
+
 	updateText = text => {
 		this.setState({
 			textToRender: text.text,
 			wordsNum: text.wordsNum,
 			linesNum: text.linesNum
-		})
+		});
 		// console.log(this.state.linesNum);
 	};
 	
 	render(){
 		return(
 			<div id='container'>
-				<ToolBar updateText = {this.updateText} />
-				<SideBar />
+				<ToolBar updateText = {this.updateText} toggleSideBar = {this.toggleSideBar} collapsed = {this.state.sideBarCollapsed}/>
+				<SideBar collapsed = {this.state.sideBarCollapsed} />
 				<Editor updateText = {this.updateText} />
 				<Preview textToRender = {this.state.textToRender} />
 				<WordCounter wordsNum = {this.state.wordsNum} linesNum = {this.state.linesNum} />

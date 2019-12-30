@@ -48,9 +48,21 @@ body {
     padding-left: 1.5rem;
 }
 
-#sideBar {
-    width: auto;
-    background-color: red;
+.sideBar {
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+    width: 300px;
+    background-color: #333333;
+    transition: 0.5s;
+    color: white;
+}
+
+.shown {
+    width: 300px;
+}
+
+.hidden {
+    width: 0;
 }
 
 #wordCounter{
