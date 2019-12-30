@@ -5,6 +5,7 @@
 // }
 
 // Keyboard shortcuts
+// import SideBar from "./components/SideBar";
 
 function changeTheme(event) {
 	// alert(event.target.value);
@@ -138,11 +139,28 @@ class Editor extends React.Component {
 	}
 }
 
-class Toolbar extends React.Component {
+class SideBar extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+	render(){
+		return(
+			<div id='sideBar'>
+				SideBar!
+				<div id={'userStatus'} />
+				<div id='document'/>
+			</div>
+		)
+	}
+}
+
+class ToolBar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.setItalic = this.setItalic.bind(this);
 		this.setBold = this.setBold.bind(this);
+		this.saveDocument = this.saveDocument.bind(this);
+		this.setStrike = this.setStrike.bind(this);
 	}
 
 	setItalic(){
@@ -184,6 +202,20 @@ class Toolbar extends React.Component {
 		
 	}
 
+	saveDocument(){
+		fetch('/save', {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				content: document.getElementById('editor').value,
+				author: 'Random'
+			})
+		}).then(r => r.json());
+	}
+
 	render(){
 		return(
 		<div id="toolBar"> 
@@ -192,13 +224,14 @@ class Toolbar extends React.Component {
 			<button className='btn' id='bold' onClick={this.setBold}><i className="fas fa-lg fa-bold" /></button>
 			<button className='btn' id='italic' onClick={this.setItalic}><i className="fas fa-lg fa-italic" /></button>
 			<button className='btn' id='strike' onClick={this.setStrike}><i className="fas fa-lg fa-strikethrough" /></button>
+			<button className='btn' id={'save'} onClick={this.saveDocument}><i className={"fas fa-lg fa-save"}/></button>
+			<button className='btn' id='export' onClick={exportPDF} ><i className={'fas fa-lg fa-download'}/></button>
 			<select id='theme' onChange={changeTheme}>
 				<option value='Github'>Github</option>
 				<option value='Gothic'>Gothic</option>
 				<option value='Newsprint'>Newsprint</option>
 				<option value='Night'>Night</option>
 			</select>
-			<button className='btn' id='export' onClick={exportPDF} />
 		</div>
 		);
 	}
@@ -271,7 +304,8 @@ class App extends React.Component {
 	render(){
 		return(
 			<div id='container'>
-				<Toolbar updateText = {this.updateText} />
+				<ToolBar updateText = {this.updateText} />
+				<SideBar />
 				<Editor updateText = {this.updateText} />
 				<Preview textToRender = {this.state.textToRender} />
 				<WordCounter wordsNum = {this.state.wordsNum} linesNum = {this.state.linesNum} />

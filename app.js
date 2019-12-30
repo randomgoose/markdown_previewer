@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const session = require('express-session');
 
 // Host static files
 app.use(express.static(__dirname));
@@ -14,20 +15,27 @@ mongoose.connect('mongodb+srv://ced:ced123@cluster0-lzbcg.mongodb.net/test?retry
     console.log('Database connected.')
 });
 
-const Document = mongoose.model('Message', {
+const Document = mongoose.model('Document', {
     content: String,
     // time: Date,
     author: String
 });
 
+// const User = mongoose.model('User', {
+//     username: {type: String, required: true, index: { unique: true}},
+//     password: {type: String, required: true}
+// })
 
+// app.get('/login', (req, res) => {
+//     // res.sendFile()
+// });
 
 
 app.post('/save', (req, res) => {
     let document = new Document(req.body);
     console.log(document);
     document.save();
-    res.sendStatus(200);
+    res.send(req.body.content);
 });
 
 app.listen(3000, ()=>{
